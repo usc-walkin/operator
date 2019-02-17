@@ -1,0 +1,30 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/plugin-proposal-class-properties": "^7.3.3",
+    "@babel/plugin-proposal-decorators": "^7.3.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-function-sent": "^7.2.0",
+    "@babel/plugin-proposal-json-strings": "^7.2.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/plugin-syntax-import-meta": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/register": "^7.0.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "babel-plugin-module-resolver": "^3.2.0"
+  },
+  "scripts": {
+    "start": "node src/launch.js"
+  },
+  "dependencies": {
+    "@iota/core": "^1.0.0-beta.8",
+    "@iota/mam": "^0.5.0",
+    "@types/node": "^11.9.4",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.2",
+    "cors": "^2.8.5",
+    "express": "^4.16.4"
+  }
+}

@@ -3,29 +3,53 @@ import * as Converter from '@iota/converter';
 import api from './api';
 import config from '@@config';
 
-function send(data) {
+async function send({
+  data,
+  seed,
+}: SendData) {
   console.log('Data to send: %o', data);
 
   const message = Converter.asciiToTrytes(JSON.stringify(data));
+  const address = await api.getNewAddress(seed || config.seed0);
+
+  console.log('New address: %s', address);
   
   const transfers = [
     {
       value: 5,
-      address: 'EYIIVLBOASB9WPIGKWQKR9XBLRULXKDDNK99PMPCK9AOBQIRVSDDFKTUWCZIAHMDLUPDEZ9XC9EYSKKR9',
+      address: <string>address,
       message,
     },
   ];
 
-  api
-    .prepareTransfers(config.seed, transfers)
-    .then(trytes => api.sendTrytes(trytes, 3, 9))
-    .then(bundle => {
-      console.log('Transfer successfully sent');
-      bundle.map(tx => console.log(tx));
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  return new Promise((resolve, reject) => {
+    console.log('Transaction begins');
+    
+    api
+      .prepareTransfers(config.seed1, transfers)
+      .then(trytes => {
+        console.log('Sending Trytes...');
+        return api.sendTrytes(trytes, 3, 9)
+      })
+      .then(bundle => {
+        console.log('Transfer successfully sent');
+        bundle.map(tx => console.log(tx));
+
+        resolve({
+          destinationAddress: bundle[0].address,
+          rawBundle: bundle,
+          tokenValue: bundle[0].value,
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
 }
 
 export default send;
+
+interface SendData {
+  data?: object;
+  seed?: string;
+}

@@ -4,6 +4,7 @@ import express from 'express';
 
 import config from '@@config';
 import httpLogger from '@@middlewares/httpLogger';
+import iota from "@@modules/iota/iota";
 
 function createExpressApp() {
   const port = config.expressPort;
@@ -14,9 +15,31 @@ function createExpressApp() {
   app.use(cors());
   app.use(httpLogger);
 
-  app.use('/recycle' , (req, res, next) => {
-    res.send({
-      foo: 1,
+  app.use('/recycle' , async (req, res, next) => {
+    const { data } = req.body;
+
+    try {
+      const result = await iota.send({
+        data,
+      });
+  
+      res.send({
+        result,
+        error: false,
+      });
+    } catch (err) {
+      res.send({
+        error: true,
+      })
+    }
+  });
+
+  app.use('/withdraw', async (req, res, next) => {
+    const { data, seed } = req.body;
+
+    const response = await iota.send({
+      data,
+      seed,
     });
   });
 

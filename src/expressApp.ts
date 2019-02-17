@@ -37,10 +37,23 @@ function createExpressApp() {
   app.use('/withdraw', async (req, res, next) => {
     const { data, seed } = req.body;
 
-    const response = await iota.send({
-      data,
-      seed,
-    });
+    try {
+      const result = await iota.send({
+        data,
+        seed,
+      });
+  
+      res.send({
+        error: false,
+        result,
+      });
+    } catch (err) {
+      console.error(err);
+
+      res.send({
+        error: true,
+      })  
+    }
   });
 
   app.use((err, req, res, next) => {

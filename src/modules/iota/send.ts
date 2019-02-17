@@ -9,10 +9,11 @@ async function send({
 }: SendData) {
   console.log('Data to send: %o', data);
 
-  const message = Converter.asciiToTrytes(JSON.stringify(data));
-  const address = await api.getNewAddress(seed || config.seed0);
+  const _seed = seed || config.seed0;
+  const message = Converter.asciiToTrytes(JSON.stringify(data || {}));
+  const address = await api.getNewAddress(_seed);
 
-  console.log('New address: %s', address);
+  console.log('New address: %s, from seed: %s', address, seed);
   
   const transfers = [
     {
@@ -24,7 +25,7 @@ async function send({
 
   return new Promise((resolve, reject) => {
     console.log('Transaction begins');
-    
+
     api
       .prepareTransfers(config.seed1, transfers)
       .then(trytes => {

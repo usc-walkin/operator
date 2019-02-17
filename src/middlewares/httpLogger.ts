@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { Request, Response, NextFunction } from 'express';
 
 const FORMAT = '[http] %s - params: %j, body: %j, user-agent: %j';

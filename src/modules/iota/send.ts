@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import * as Converter from '@iota/converter';
 
 import api from './api';
@@ -13,7 +14,7 @@ async function send({
   const message = Converter.asciiToTrytes(JSON.stringify(data || {}));
   const address = await api.getNewAddress(_seed);
 
-  console.log('New address: %s, from seed: %s', address, seed);
+  console.log(`${chalk.green('New Address')}: %s, from seed: %s`, address, seed);
   
   const transfers = [
     {
@@ -29,11 +30,11 @@ async function send({
     api
       .prepareTransfers(config.seed1, transfers)
       .then(trytes => {
-        console.log('Sending Trytes...');
+        console.log(`${chalk.green('Sending')} Trytes...`);
         return api.sendTrytes(trytes, 3, 9)
       })
       .then(bundle => {
-        console.log('Transfer successfully sent');
+        console.log(`Transfer ${chalk.green('successfully')} sent`);
         bundle.map(tx => console.log(tx));
 
         resolve({

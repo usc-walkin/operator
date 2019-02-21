@@ -12,9 +12,10 @@ async function send({
 
   const _seed = seed || config.seed0;
   const message = Converter.asciiToTrytes(JSON.stringify(data || {}));
-  const address = await api.getNewAddress(_seed);
 
-  console.log(`${chalk.green('New Address')}: %s, from seed: %s`, address, seed);
+  console.log('Finding new address to begin transaction...');
+  const address = await api.getNewAddress(_seed);
+  console.log(`${chalk.green('New Address')} found: %s, from seed: %s`, address, seed);
   
   const transfers = [
     {
@@ -35,7 +36,7 @@ async function send({
       })
       .then(bundle => {
         console.log(`Transfer ${chalk.green('successfully')} sent`);
-        bundle.map(tx => console.log(tx));
+        // bundle.map(tx => console.log(tx));
 
         resolve({
           destinationAddress: bundle[0].address,
